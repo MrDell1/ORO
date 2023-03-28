@@ -3,7 +3,7 @@ package com.example.oro.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -11,13 +11,18 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-public class Category {
+public class LineItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "category_name", nullable = false)
-    private String name;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<Part> parts = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
+
+    @ManyToOne
+    @JoinColumn(name = "part_id")
+    private Part part;
+
+    private int quantity;
 }

@@ -2,16 +2,12 @@ package com.example.oro.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -19,13 +15,16 @@ import java.util.List;
 public class Part {
 
     @Id
+    @Column(name = "part_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String sector;
-    private int floor;
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "part", cascade = CascadeType.ALL)
-    private List<Car> supportedCars;
-    @OneToOne
+    private long price;
+    private String title;
+
+    @ManyToMany(mappedBy = "parts")
+    private List<Car> models = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
 }
